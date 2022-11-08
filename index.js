@@ -53,6 +53,15 @@ app.get("/services/:id", async (req, res) => {
   } catch (error) {}
 });
 
+app.post("/reviews", async (req, res) => {
+  try {
+    const result = await reviews.insertOne(req.body);
+    res.send(result);
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
 app.get("/reviews", async (req, res) => {
   console.log(req.query.id);
   const cursor = reviews.find({ id: req.body.id });

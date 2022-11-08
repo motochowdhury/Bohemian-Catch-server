@@ -64,9 +64,9 @@ app.post("/reviews", async (req, res) => {
 
 app.get("/reviews", async (req, res) => {
   console.log(req.query.id);
-  const cursor = reviews.find({ id: req.body.id });
+  const cursor = reviews.find({ id: req.query.id });
   const result = await cursor.toArray();
-
+  console.log(result);
   res.send(result);
 });
 // LISTENER

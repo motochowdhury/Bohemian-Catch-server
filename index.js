@@ -16,6 +16,7 @@ client.connect(console.log(`Database Is connected`));
 
 const bohemianDb = client.db("bohemianDB");
 const services = bohemianDb.collection("services");
+const reviews = bohemianDb.collection("reviews");
 
 // APPLICATION API
 app.get("/", (req, res) => {
@@ -52,5 +53,12 @@ app.get("/services/:id", async (req, res) => {
   } catch (error) {}
 });
 
+app.get("/reviews", async (req, res) => {
+  console.log(req.query.id);
+  const cursor = reviews.find({ id: req.body.id });
+  const result = await cursor.toArray();
+
+  res.send(result);
+});
 // LISTENER
 app.listen(process.env.PORT || 5000, () => console.log("Server is Running"));

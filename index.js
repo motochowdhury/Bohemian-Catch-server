@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const { MongoClient } = require("mongodb");
 const jwt = require("jsonwebtoken");
+const { ObjectID } = require("bson");
 const app = express();
 
 // MIDLE WARE
@@ -28,6 +29,27 @@ app.post("/services", async (req, res) => {
   } catch (error) {
     console.log(error.message);
   }
+});
+
+app.get("/services", async (req, res) => {
+  try {
+    const cursor = await services.find({});
+    const limitedService = await cursor.limit(3).toArray();
+    const allService = await services.find({}).toArray();
+    res.send({
+      allService,
+      limitedService,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.get("/services/:id", async (req, res) => {
+  try {
+    const result = await services.findOne({ _id: ObjectID(req.params.id) });
+    res.send(result);
+  } catch (error) {}
 });
 
 // LISTENER

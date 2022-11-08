@@ -1,0 +1,38 @@
+[
+  {
+    "serviceName": "Commercial Photography",
+    "desc": "Commercial photography is a genre that encompasses any photos used for a business or publication. “It’s photography that helps sell things”",
+    "img": "https://i.ibb.co/8m7qZmx/commercial.jpg",
+    "price": 500
+  },
+  {
+    "serviceName": "Wedding Photography",
+    "desc": "Photography is our passion, and i have been living our passion for photography for more than 10 years. i am the best wedding photography service provider in Bangladesh who capturing life’s precious moments, And make your memories last a lifetime.",
+    "img": "https://i.ibb.co/jbX8bsG/wedding.webp",
+    "price": 400
+  },
+  {
+    "serviceName": "Videography",
+    "desc": "I also provide videography services, i have experienced experts who are working in this field with good reviews. I take shots in anywhere of bangladesh",
+    "img": "https://i.ibb.co/nP6RHXf/video.webp",
+    "price": 450
+  },
+  {
+    "serviceName": "Video Editing",
+    "desc": "A good polished editing can up your captred moment into next lavel, I edite videos by experienced experts who are give your videos into more smooth and colorful, I provide remote services also in video editing",
+    "img": "https://i.ibb.co/D5yWXYg/video-Editing.webp",
+    "price": 200
+  },
+  {
+    "serviceName": "Tour Photography",
+    "desc": "I love to travel, that's why you can take me with your friends for capturing your nice moment in my camera. I am glad to take a project with travelers",
+    "img": "https://i.ibb.co/dpbTpZ4/tour.webp",
+    "price": 300
+  },
+  {
+    "serviceName": "Proffesional Photography",
+    "desc": "You're looking for a proffesional photographer who clicked your potos for coorporate field. then you're in right place, i am provide proffessional photography services from 10 years.",
+    "img": "https://i.ibb.co/dpbTpZ4/tour.webp",
+    "price": 250
+  }
+]

@@ -20,7 +20,12 @@ const reviews = bohemianDb.collection("reviews");
 
 // APPLICATION API
 app.get("/", (req, res) => {
+  console.log(new Date());
   res.send("Server is Up");
+});
+
+app.post("/", (req, res) => {
+  console.log(req.body);
 });
 
 app.post("/services", async (req, res) => {
@@ -63,7 +68,7 @@ app.post("/reviews", async (req, res) => {
 });
 
 app.get("/reviews", async (req, res) => {
-  const cursor = reviews.find({ id: req.query.id });
+  const cursor = reviews.find({ id: req.query.id }).sort({ date: -1 });
   const result = await cursor.toArray();
   res.send(result);
 });
@@ -74,6 +79,18 @@ app.get("/my-reviews", async (req, res) => {
     const result = await cursor.toArray();
     res.send(result);
   } catch (error) {}
+});
+
+app.delete("/delete-review", async (req, res) => {
+  try {
+    console.log(req.query.id);
+    // const queiry = {_id: ob}
+    const result = await reviews.deleteOne({ _id: ObjectID(req.query.id) });
+    console.log(result);
+    res.send(result);
+  } catch (error) {
+    console.log(error.message);
+  }
 });
 // LISTENER
 app.listen(process.env.PORT || 5000, () => console.log("Server is Running"));

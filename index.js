@@ -83,14 +83,30 @@ app.get("/my-reviews", async (req, res) => {
 
 app.delete("/delete-review", async (req, res) => {
   try {
-    console.log(req.query.id);
-    // const queiry = {_id: ob}
     const result = await reviews.deleteOne({ _id: ObjectID(req.query.id) });
-    console.log(result);
     res.send(result);
   } catch (error) {
     console.log(error.message);
   }
 });
+
+app.patch("/update-review", async (req, res) => {
+  try {
+    console.log(req.body);
+    const result = await reviews.updateOne(
+      { _id: ObjectID(req.query.id) },
+      {
+        $set: {
+          review: req.body.review,
+        },
+      }
+    );
+
+    res.send(result);
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
 // LISTENER
 app.listen(process.env.PORT || 5000, () => console.log("Server is Running"));

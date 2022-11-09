@@ -63,11 +63,17 @@ app.post("/reviews", async (req, res) => {
 });
 
 app.get("/reviews", async (req, res) => {
-  console.log(req.query.id);
   const cursor = reviews.find({ id: req.query.id });
   const result = await cursor.toArray();
-  console.log(result);
   res.send(result);
+});
+
+app.get("/my-reviews", async (req, res) => {
+  try {
+    const cursor = reviews.find({ email: req.query?.email });
+    const result = await cursor.toArray();
+    res.send(result);
+  } catch (error) {}
 });
 // LISTENER
 app.listen(process.env.PORT || 5000, () => console.log("Server is Running"));

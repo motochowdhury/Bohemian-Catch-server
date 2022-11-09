@@ -10,6 +10,24 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+function verifyJwt(req, res, next) {
+  const authtoken = req.headers.authtoken;
+
+  if (!authtoken) {
+    return res.status(401).send({ message: "unauthorized access" });
+  }
+
+  const token = authtoken.split(" ")[1];
+  console.log(token);
+
+  jwt.verify(token, process.env.SECRET_ACCESS_TOKEN, function (err, decoded) {
+    if (err) {
+      return res.status(403).send({ message: "Forbidden access" });
+    }
+    next();
+  });
+}
+
 // MONGODB
 const client = new MongoClient("mongodb://localhost:27017"); //Must have Change URI
 client.connect(console.log(`Database Is connected`));
@@ -24,8 +42,12 @@ app.get("/", (req, res) => {
   res.send("Server is Up");
 });
 
-app.post("/", (req, res) => {
-  console.log(req.body);
+app.get("/jwt", (req, res) => {
+  const token = jwt.sign(
+    { email: req.params.email },
+    process.env.SECRET_ACCESS_TOKEN
+  );
+  res.send({ token });
 });
 
 app.post("/services", async (req, res) => {
@@ -33,7 +55,7 @@ app.post("/services", async (req, res) => {
     const result = await services.insertOne(req.body);
     res.send(result);
   } catch (error) {
-    console.log(error.message);
+    res.send(error.message);
   }
 });
 
@@ -47,7 +69,7 @@ app.get("/services", async (req, res) => {
       limitedService,
     });
   } catch (error) {
-    console.log(error.message);
+    res.send(error.message);
   }
 });
 
@@ -55,7 +77,9 @@ app.get("/services/:id", async (req, res) => {
   try {
     const result = await services.findOne({ _id: ObjectID(req.params.id) });
     res.send(result);
-  } catch (error) {}
+  } catch (error) {
+    res.send(error.message);
+  }
 });
 
 app.post("/reviews", async (req, res) => {
@@ -63,22 +87,28 @@ app.post("/reviews", async (req, res) => {
     const result = await reviews.insertOne(req.body);
     res.send(result);
   } catch (error) {
-    console.log(error.message);
+    res.send(error.message);
   }
 });
 
 app.get("/reviews", async (req, res) => {
-  const cursor = reviews.find({ id: req.query.id }).sort({ date: -1 });
-  const result = await cursor.toArray();
-  res.send(result);
+  try {
+    const cursor = reviews.find({ id: req.query.id }).sort({ date: -1 });
+    const result = await cursor.toArray();
+    res.send(result);
+  } catch (error) {
+    res.send(error.message);
+  }
 });
 
-app.get("/my-reviews", async (req, res) => {
+app.get("/my-reviews", verifyJwt, async (req, res) => {
   try {
     const cursor = reviews.find({ email: req.query?.email });
     const result = await cursor.toArray();
     res.send(result);
-  } catch (error) {}
+  } catch (error) {
+    res.send(error.message);
+  }
 });
 
 app.delete("/delete-review", async (req, res) => {
@@ -86,7 +116,7 @@ app.delete("/delete-review", async (req, res) => {
     const result = await reviews.deleteOne({ _id: ObjectID(req.query.id) });
     res.send(result);
   } catch (error) {
-    console.log(error.message);
+    res.send(error.message);
   }
 });
 
@@ -104,7 +134,7 @@ app.patch("/update-review", async (req, res) => {
 
     res.send(result);
   } catch (error) {
-    console.log(error.message);
+    res.send(error.message);
   }
 });
 

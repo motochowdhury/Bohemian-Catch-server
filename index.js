@@ -40,7 +40,7 @@ app.post("/services", async (req, res) => {
 app.get("/services", async (req, res) => {
   try {
     const cursor = await services.find({});
-    const limitedService = await cursor.limit(3).toArray();
+    const limitedService = await cursor.limit(3).sort({ date: -1 }).toArray();
     const allService = await services.find({}).toArray();
     res.send({
       allService,

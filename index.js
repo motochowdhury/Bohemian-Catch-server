@@ -113,7 +113,7 @@ app.get("/my-reviews", verifyJwt, async (req, res) => {
 
 app.delete("/delete-review", async (req, res) => {
   try {
-    const result = await reviews.deleteOne({ _id: ObjectId(req.query.id) });
+    const result = await reviews.deleteOne({ _id: ObjectId(req.query?.id) });
     res.send(result);
   } catch (error) {
     res.send(error.message);
@@ -122,14 +122,13 @@ app.delete("/delete-review", async (req, res) => {
 
 app.patch("/update-review", async (req, res) => {
   try {
-    const result = await reviews.updateOne(
-      { _id: ObjectId(req.query.id) },
-      {
-        $set: {
-          review: req.body.review,
-        },
-      }
-    );
+    const query = { _id: ObjectId(req.query.id) };
+    console.log(query);
+    const result = await reviews.updateOne(query, {
+      $set: {
+        review: req.body.review,
+      },
+    });
     res.send(result);
   } catch (error) {
     res.send(error.message);

@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 const jwt = require("jsonwebtoken");
 const app = express();
 
@@ -38,7 +38,6 @@ const reviews = bohemianDb.collection("reviews");
 
 // APPLICATION API
 app.get("/", (req, res) => {
-  console.log(new Date());
   res.send("Server is Up");
 });
 
@@ -75,7 +74,8 @@ app.get("/services", async (req, res) => {
 
 app.get("/services/:id", async (req, res) => {
   try {
-    const result = await services.findOne({ _id: ObjectID(req.params.id) });
+    const query = { _id: ObjectId(req.params.id) };
+    const result = await services.findOne(query);
     res.send(result);
   } catch (error) {
     res.send(error.message);
@@ -113,7 +113,7 @@ app.get("/my-reviews", verifyJwt, async (req, res) => {
 
 app.delete("/delete-review", async (req, res) => {
   try {
-    const result = await reviews.deleteOne({ _id: ObjectID(req.query.id) });
+    const result = await reviews.deleteOne({ _id: ObjectId(req.query.id) });
     res.send(result);
   } catch (error) {
     res.send(error.message);

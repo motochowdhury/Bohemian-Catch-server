@@ -122,7 +122,6 @@ app.delete("/delete-review", async (req, res) => {
 
 app.patch("/update-review", async (req, res) => {
   try {
-    console.log(req.body);
     const result = await reviews.updateOne(
       { _id: ObjectId(req.query.id) },
       {
@@ -131,7 +130,6 @@ app.patch("/update-review", async (req, res) => {
         },
       }
     );
-
     res.send(result);
   } catch (error) {
     res.send(error.message);

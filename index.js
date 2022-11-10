@@ -124,7 +124,7 @@ app.patch("/update-review", async (req, res) => {
   try {
     console.log(req.body);
     const result = await reviews.updateOne(
-      { _id: ObjectID(req.query.id) },
+      { _id: ObjectId(req.query.id) },
       {
         $set: {
           review: req.body.review,

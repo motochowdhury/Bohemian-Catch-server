@@ -3,7 +3,6 @@ const express = require("express");
 const cors = require("cors");
 const { MongoClient } = require("mongodb");
 const jwt = require("jsonwebtoken");
-const { ObjectID } = require("bson");
 const app = express();
 
 // MIDLE WARE
@@ -29,7 +28,8 @@ function verifyJwt(req, res, next) {
 }
 
 // MONGODB
-const client = new MongoClient("mongodb://localhost:27017"); //Must have Change URI
+const uri = `mongodb+srv://motoC:${process.env.MONGO_PASSWORD}@cluster0.wokfd1b.mongodb.net/?retryWrites=true&w=majority`;
+const client = new MongoClient(uri);
 client.connect(console.log(`Database Is connected`));
 
 const bohemianDb = client.db("bohemianDB");
